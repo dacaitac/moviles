@@ -1,4 +1,0 @@
-#Thu Sep 26 00:39:13 COT 2019
-base.0=/mnt/1BFBEA452134E134/Documentos/moviles/Reto3/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
