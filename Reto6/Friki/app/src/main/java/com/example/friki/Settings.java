@@ -1,26 +1,30 @@
 package com.example.friki;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
 
-import androidx.annotation.Nullable;
-
-import edu.harding.tictactoe.TicTacToeGame;
-
-public class Settings extends PreferenceActivity {
-
-    TicTacToeGame mGame;
-
-    public void setGame(TicTacToeGame game) {
-        mGame = game;
-    }
+public class Settings extends AppCompatActivity {
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        addPreferencesFromResource(R.xml.preferences);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.settings_activity);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.settings, new SettingsFragment())
+                .commit();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    public static class SettingsFragment extends PreferenceFragmentCompat {
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.preferences, rootKey);
+        }
     }
 }

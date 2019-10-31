@@ -3,6 +3,7 @@ package com.example.friki;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -24,8 +25,21 @@ public class MainActivity extends AppCompatActivity {
 
     private TicTacToeGame mGame;
     private boolean mSound;
-    private PreferenceManager mPrefs;
+    private SharedPreferences mPrefs;
 
+    boolean mGameOver;
+    // Buttons making up the board
+
+    MediaPlayer mHumanMediaPlayer;
+    MediaPlayer mComputerMediaPlayer;
+    Handler handler = new Handler();
+
+    private int[] history;
+
+    // Various text displayed
+    private TextView mInfoTextView, HumanWon, TiesNumber, AndroidWon;
+    private BoardView mBoardView;
+    private int winner;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,21 +66,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
-
-    boolean mGameOver;
-    // Buttons making up the board
-
-    MediaPlayer mHumanMediaPlayer;
-    MediaPlayer mComputerMediaPlayer;
-    Handler handler = new Handler();
-
-    private int[] history;
-
-    // Various text displayed
-    private TextView mInfoTextView, HumanWon, TiesNumber, AndroidWon;
-    private BoardView mBoardView;
-    private int winner;
 
     private OnTouchListener mTouchListener = new OnTouchListener() {
         private boolean setMove(char player, int location) {
@@ -102,16 +101,22 @@ public class MainActivity extends AppCompatActivity {
 
                         if (winner == 0)
                             mInfoTextView.setText("It's your turn.");
-                        else if (winner == 1)
+                        else if (winner == 1){
                             mInfoTextView.setText("It's a tie!");
-                        else if (winner == 2) {
-                            mInfoTextView.setText("You won!");
                             mGameOver = true;
-                        } else {
-                            mInfoTextView.setText("Android won!");
+                            TiesNumber.setText(String.valueOf(++history[0]));
+                        }
+                        else if ( winner == 2) {
+                            mGameOver = true;
+                            HumanWon.setText(String.valueOf(++history[1]));
+                            String defaultMessage = getResources().getString(R.string.result_human_wins);
+                            mInfoTextView.setText(mPrefs.getString("victory_message", defaultMessage));
+                        }
+                        else if ( winner == 3) {
+                            mInfoTextView.setText(R.string.result_computer_wins);
+                            AndroidWon.setText(String.valueOf(++history[2]));
                             mGameOver = true;
                         }
-
                     }
                 }, 750);
 
@@ -126,8 +131,7 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == RESULT_CANCELED){
             mSound = mPrefs.getBoolean("sound", true);
 
-            String difficultyLevel = mPrefs.getString("difficulty_level",
-                    getResources().getString(R.string.difficulty_harder));
+            String difficultyLevel = mPrefs.getString("difficulty_level", getResources().getString(R.string.difficulty_harder));
 
             if(difficultyLevel.equals(getResources().getString(R.string.difficulty_easy)))
                 mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Easy);
@@ -175,11 +179,10 @@ public class MainActivity extends AppCompatActivity {
         startNewGame();
         mGameOver = false;
 
-        mPrefs = PreferenceManager.getSharedPreferences(this);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSound = mPrefs.getBoolean("sound", true);
 
-        String difficultyLevel = mPrefs.getString("difficulty_level",
-                getResources().getString(R.string.difficulty_harder));
+        String difficultyLevel = mPrefs.getString("difficulty_level", getResources().getString(R.string.difficulty_harder));
 
         if(difficultyLevel.equals(getResources().getString(R.string.difficulty_easy)))
             mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Easy);

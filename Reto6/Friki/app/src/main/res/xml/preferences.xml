@@ -1,21 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="sound"
-        android:summary="Turn the sound on or off"
-        android:title="Sound" />
+        android:title="Sound"
+        android:summary="Turn the sound on or off"/>
+
     <EditTextPreference
         android:key="victory_message"
+        android:summary=""
         android:defaultValue="@string/result_human_wins"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="Victory message" />
+        android:title="Victory Message" />
+
     <ListPreference
+        android:key="difficulty_level"
+        android:title="Difficulty Level"
+        android:summary=""
         android:defaultValue="@string/difficulty_expert"
         android:entries="@array/list_difficulty_level"
         android:entryValues="@array/list_difficulty_level"
-        android:key="difficulty_level"
-        android:title="Difficulty Level" />
+        />
 </PreferenceScreen>

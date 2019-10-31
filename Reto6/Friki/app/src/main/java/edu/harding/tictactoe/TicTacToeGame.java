@@ -37,12 +37,15 @@ public class TicTacToeGame {
     public TicTacToeGame() {
         mRand = new Random();
     }
+
     public DifficultyLevel getDifficultyLevel() {
         return mDifficultyLevel;
     }
+
     public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
         mDifficultyLevel = difficultyLevel;
     }
+
     public int getComputerMove() {
         int move = -1;
         if (mDifficultyLevel == DifficultyLevel.Easy)
@@ -63,6 +66,7 @@ public class TicTacToeGame {
         }
         return move;
     }
+
     private int getBlockingMove() {
         int move = -1;
         // See if there's a move O can make to block X from winning
@@ -81,6 +85,7 @@ public class TicTacToeGame {
         }
         return move;
     }
+
     private int getWinningMove() {
         int move = -1;
         // First see if there's a move O can make to win
@@ -98,6 +103,7 @@ public class TicTacToeGame {
         }
         return move;
     }
+
     private int getRandomMove() {
         int move;
         // Generate random move
@@ -170,10 +176,10 @@ public class TicTacToeGame {
         for (int i = 0; i < BOARD_SIZE; i++)
             mBoard[i] = OPEN_SPOT;
     }
+
     public boolean setMove(char player, int location) {
         mBoard[location] = player;
         return true;
     }
-
 
 }
